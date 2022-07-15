@@ -1,8 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:newsapi/app_setup/dependency_injection.dart';
+import 'package:newsapi/core/service/utils.dart';
 import 'package:newsapi/core/theme/component/widget/custom_shimmer.dart';
 import 'package:newsapi/core/theme/component/widget/drawerWidget.dart';
+import 'package:newsapi/feature/apple_article/application/Top_Headline/top_headline/top_headline_bloc.dart';
 import 'package:newsapi/feature/apple_article/application/article_bloc/article_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -15,24 +17,29 @@ class ArticleScreen extends StatefulWidget {
   State<ArticleScreen> createState() => _ArticleScreenState();
 }
 
-@override
-void initState() {}
-
 class _ArticleScreenState extends State<ArticleScreen> {
+  @override
+  void initState() {
+    // inject<TopHeadlineBloc>().add(TopHeadlinesStart());
+
+    super.initState();
+  }
+
   int current = 0;
   final CarouselController _controller = CarouselController();
   @override
   Widget build(BuildContext context) {
+    final color = Utils().getColor;
     return Scaffold(
       // backgroundColor: Colors.black45,
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: IconThemeData(color: color),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: Text(
           'News Api',
           style: GoogleFonts.lobster(
-            textStyle: const TextStyle(
-              color: Colors.grey,
+            textStyle: TextStyle(
+              color: color,
               fontSize: 20,
               letterSpacing: 0.6,
               fontWeight: FontWeight.bold,
@@ -154,21 +161,104 @@ class _ArticleScreenState extends State<ArticleScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Text(
-              'Trending Movies',
+              'Top Headline',
               style: Theme.of(context).textTheme.headline6?.copyWith(
                     color: Colors.white,
                   ),
             ),
           ),
-          ListView.builder(
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                return Container(
-                  height: 50,
-                  color: Colors.red,
-                  width: 50,
+          BlocBuilder<TopHeadlineBloc, TopHeadlineState>(
+            bloc: inject<TopHeadlineBloc>(),
+            builder: (context, state) {
+              if (state is TopHeadlineLoadingState) {
+                return CustomShimmer(
+                  baseColor: const Color(0xff262837),
+                  highlightColor: Colors.grey.shade100,
+                  widget: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                    ),
+                    height: 100,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                  ),
                 );
-              }),
+              }
+              if (state is TopHeadlineLoadedState) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 140,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 10,
+                        ),
+                        child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount:
+                                state.topHeadlineResponse.articles.length,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              final data =
+                                  state.topHeadlineResponse.articles[index];
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    // decoration: const BoxDecoration(
+                                    //     shape: BoxShape.circle),
+                                    child: CachedNetworkImage(
+                                      fit: BoxFit.cover,
+                                      height: 100,
+                                      width: 200,
+                                      imageUrl: data.urlToImage ?? '',
+                                      progressIndicatorBuilder:
+                                          (BuildContext ctx, String image,
+                                              DownloadProgress progress) {
+                                        return Container(
+                                          color: const Color(0xff201D2C)
+                                              .withOpacity(
+                                                  progress.progress ?? 1.0),
+                                        );
+                                      },
+                                      errorWidget: (context, _, error) {
+                                        return const Icon(Icons.error);
+                                      },
+                                    ),
+                                  ),
+                                  Text(data.author ?? '')
+                                ],
+                              );
+                            }),
+                      ),
+                    ),
+                  ],
+                );
+              }
+              if (state is TopHeadlineErrorState) {
+                return Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Text(
+                      state.errorMessage,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Colors.white,
+                          ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                );
+              }
+              return const SizedBox();
+            },
+          ),
           const Expanded(child: ArticleAppleWidget()),
         ],
       ),

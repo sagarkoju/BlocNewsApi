@@ -41,6 +41,8 @@ void registerBloc() {
       () => SwitchBloc(),
     )
     ..registerLazySingleton(
-      () => TopHeadlineBloc(homeRepository: inject())..add(TopHeadlinesStart()),
+      () => TopHeadlineBloc(
+        homeRepository: inject(),
+      )..add(TopHeadlinesStart()),
     );
 }

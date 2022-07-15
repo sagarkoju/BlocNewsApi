@@ -9,23 +9,23 @@ part 'top_headline_state.dart';
 class TopHeadlineBloc extends Bloc<TopHeadlineEvent, TopHeadlineState> {
   TopHeadlineBloc({required this.homeRepository})
       : super(TopHeadlineInitialState()) {
-    // on<TopHeadlinesStart>(
-    //   (event, emit) async {
-    //     emit(TopHeadlineLoadingState());
-    //     final response = await homeRepository.topHeadlines(
-    //       category: 'business',
-    //       country: 'us',
-    //     );
-    //     response.fold(
-    //       (topheadlinelist) {
-    //         emit(TopHeadlineLoadedState(articleResponse: topheadlinelist));
-    //       },
-    //       (failure) {
-    //         emit(TopHeadlineErrorState(errorMessage: failure.reason));
-    //       },
-    //     );
-    //   },
-    // );
+    on<TopHeadlinesStart>(
+      (event, emit) async {
+        emit(TopHeadlineLoadingState());
+        final response = await homeRepository.topHeadlines(
+          category: 'business',
+          country: 'us',
+        );
+        response.fold(
+          (topheadlinelist) {
+            emit(TopHeadlineLoadedState(topHeadlineResponse: topheadlinelist));
+          },
+          (failure) {
+            emit(TopHeadlineErrorState(errorMessage: failure.reason));
+          },
+        );
+      },
+    );
   }
   final IArticleRepository homeRepository;
 }

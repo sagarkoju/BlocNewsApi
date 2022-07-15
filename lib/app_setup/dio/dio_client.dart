@@ -13,7 +13,9 @@ Dio dioClient() {
       'Accept': Headers.jsonContentType,
     },
     baseUrl: 'https://newsapi.org/v2',
-    queryParameters: {'apiKey': 'ca56a4c0d027426a868d37a343508228'},
+    queryParameters: {
+      // 'apiKey': 'ca56a4c0d027426a868d37a343508228',
+    },
   );
   _dio.options = options;
   _dio.interceptors.addAll([

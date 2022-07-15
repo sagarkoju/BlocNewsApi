@@ -340,7 +340,7 @@ class _$ArticleTearOff {
       required String url,
       String? urlToImage,
       required String publishedAt,
-      required String content}) {
+      String? content}) {
     return _Article(
       source: source,
       author: author,
@@ -370,7 +370,7 @@ mixin _$Article {
   String get url => throw _privateConstructorUsedError;
   String? get urlToImage => throw _privateConstructorUsedError;
   String get publishedAt => throw _privateConstructorUsedError;
-  String get content => throw _privateConstructorUsedError;
+  String? get content => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -389,7 +389,7 @@ abstract class $ArticleCopyWith<$Res> {
       String url,
       String? urlToImage,
       String publishedAt,
-      String content});
+      String? content});
 
   $SourceCopyWith<$Res>? get source;
 }
@@ -445,7 +445,7 @@ class _$ArticleCopyWithImpl<$Res> implements $ArticleCopyWith<$Res> {
       content: content == freezed
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 
@@ -474,7 +474,7 @@ abstract class _$ArticleCopyWith<$Res> implements $ArticleCopyWith<$Res> {
       String url,
       String? urlToImage,
       String publishedAt,
-      String content});
+      String? content});
 
   @override
   $SourceCopyWith<$Res>? get source;
@@ -532,7 +532,7 @@ class __$ArticleCopyWithImpl<$Res> extends _$ArticleCopyWithImpl<$Res>
       content: content == freezed
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -548,7 +548,7 @@ class _$_Article implements _Article {
       required this.url,
       this.urlToImage,
       required this.publishedAt,
-      required this.content});
+      this.content});
 
   factory _$_Article.fromJson(Map<String, dynamic> json) =>
       _$$_ArticleFromJson(json);
@@ -568,7 +568,7 @@ class _$_Article implements _Article {
   @override
   final String publishedAt;
   @override
-  final String content;
+  final String? content;
 
   @override
   String toString() {
@@ -632,7 +632,7 @@ abstract class _Article implements Article {
       required String url,
       String? urlToImage,
       required String publishedAt,
-      required String content}) = _$_Article;
+      String? content}) = _$_Article;
 
   factory _Article.fromJson(Map<String, dynamic> json) = _$_Article.fromJson;
 
@@ -651,7 +651,7 @@ abstract class _Article implements Article {
   @override
   String get publishedAt => throw _privateConstructorUsedError;
   @override
-  String get content => throw _privateConstructorUsedError;
+  String? get content => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$ArticleCopyWith<_Article> get copyWith =>

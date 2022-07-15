@@ -12,10 +12,10 @@ abstract class IArticleRepository {
     required String from,
     required String to,
   });
-  // Future<Either<ArticleResponse, Failure>> topHeadlines({
-  //   required String country,
-  //   required String category,
-  // });
+  Future<Either<ArticleResponse, Failure>> topHeadlines({
+    required String country,
+    required String category,
+  });
 }
 
 class ArticleRepository implements IArticleRepository {
@@ -37,7 +37,7 @@ class ArticleRepository implements IArticleRepository {
         'sortBy': sortBy,
         'from': from,
         'to': to,
-        // 'apiKey': 'ca56a4c0d027426a868d37a343508228',
+        'apiKey': 'ca56a4c0d027426a868d37a343508228',
       };
 
       final response = await dio.get<Map<String, dynamic>>(
@@ -54,29 +54,29 @@ class ArticleRepository implements IArticleRepository {
     }
   }
 
-  // @override
-  // Future<Either<ArticleResponse, Failure>> topHeadlines({
-  //   required String country,
-  //   required String category,
-  // }) async {
-  //   try {
-  //     final query = {
-  //       'country': country,
-  //       'category': category,
-  //       // 'apiKey': 'ca56a4c0d027426a868d37a343508228',
-  //     };
+  @override
+  Future<Either<ArticleResponse, Failure>> topHeadlines({
+    required String country,
+    required String category,
+  }) async {
+    try {
+      final query = {
+        'country': country,
+        'category': category,
+        'apiKey': 'ca56a4c0d027426a868d37a343508228',
+      };
 
-  //     final response = await dio.get<Map<String, dynamic>>(
-  //       NewsApi.getTopHeadLines,
-  //       queryParameters: query,
-  //     );
-  //     final json = Map<String, dynamic>.from(response.data!);
-  //     final result = ArticleResponse.fromJson(json);
-  //     return Left(result);
-  //   } on DioError catch (e) {
-  //     return Right(e.toFailure);
-  //   } catch (e) {
-  //     return Right(Failure.fromException());
-  //   }
-  // }
+      final response = await dio.get<Map<String, dynamic>>(
+        NewsApi.getTopHeadLines,
+        queryParameters: query,
+      );
+      final json = Map<String, dynamic>.from(response.data!);
+      final result = ArticleResponse.fromJson(json);
+      return Left(result);
+    } on DioError catch (e) {
+      return Right(e.toFailure);
+    } catch (e) {
+      return Right(Failure.fromException());
+    }
+  }
 }

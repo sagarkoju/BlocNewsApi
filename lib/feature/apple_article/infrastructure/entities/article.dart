@@ -32,7 +32,7 @@ class Article with _$Article {
     required String url,
     String? urlToImage,
     required String publishedAt,
-    required String content,
+    String? content,
   }) = _Article;
   factory Article.fromJson(Map<String, dynamic> json) =>
       _$ArticleFromJson(json);

@@ -39,7 +39,7 @@ _$_Article _$$_ArticleFromJson(Map<String, dynamic> json) => _$_Article(
       url: json['url'] as String,
       urlToImage: json['urlToImage'] as String?,
       publishedAt: json['publishedAt'] as String,
-      content: json['content'] as String,
+      content: json['content'] as String?,
     );
 
 Map<String, dynamic> _$$_ArticleToJson(_$_Article instance) =>

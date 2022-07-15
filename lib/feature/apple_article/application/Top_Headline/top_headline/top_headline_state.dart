@@ -9,9 +9,9 @@ class TopHeadlineInitialState extends TopHeadlineState {}
 class TopHeadlineLoadingState extends TopHeadlineState {}
 
 class TopHeadlineLoadedState extends TopHeadlineState {
-  final ArticleResponse articleResponse;
+  final ArticleResponse topHeadlineResponse;
   TopHeadlineLoadedState({
-    required this.articleResponse,
+    required this.topHeadlineResponse,
   });
 }
 
