@@ -14,8 +14,8 @@ class ArticleBloc extends Bloc<ArticleEvents, ArticleState> {
         emit(ArticleLoadingState());
         final response = await homeRepository.getArticle(
             q: 'apple',
-            to: '2022-07-04',
-            from: '2022-07-04',
+            to: DateTime.parse('2022-07-20'),
+            from: DateTime.parse('2022-07-20'),
             sortBy: 'popularity');
         response.fold(
           (articleList) {

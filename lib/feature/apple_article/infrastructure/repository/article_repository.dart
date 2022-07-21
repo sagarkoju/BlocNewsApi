@@ -9,8 +9,8 @@ abstract class IArticleRepository {
   Future<Either<ArticleResponse, Failure>> getArticle({
     required String q,
     required String sortBy,
-    required String from,
-    required String to,
+    required DateTime from,
+    required DateTime to,
   });
   Future<Either<ArticleResponse, Failure>> topHeadlines({
     required String country,
@@ -28,8 +28,8 @@ class ArticleRepository implements IArticleRepository {
   Future<Either<ArticleResponse, Failure>> getArticle({
     required String q,
     required String sortBy,
-    required String from,
-    required String to,
+    required DateTime from,
+    required DateTime to,
   }) async {
     try {
       final query = {
