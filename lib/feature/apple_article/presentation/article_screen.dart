@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:newsapi/app_setup/dependency_injection.dart';
 import 'package:newsapi/core/service/utils.dart';
 import 'package:newsapi/core/theme/component/widget/article_apple_news.dart';
@@ -12,6 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:newsapi/feature/apple_article/presentation/article_detail.dart';
+import 'package:newsapi/feature/apple_article/presentation/search_news.dart';
 
 class ArticleScreen extends StatefulWidget {
   const ArticleScreen({Key? key}) : super(key: key);
@@ -50,6 +52,19 @@ class _ArticleScreenState extends State<ArticleScreen> {
         ),
         elevation: 0,
         centerTitle: true,
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const SearchScreen()));
+              },
+              icon: Icon(
+                IconlyLight.search,
+                color: color,
+              ))
+        ],
       ),
       drawer: const DrawerWidget(),
       body: SingleChildScrollView(

@@ -12,7 +12,12 @@ abstract class IArticleRepository {
     required DateTime from,
     required DateTime to,
   });
-  Future<Either<ArticleResponse, Failure>> topHeadlines({
+  Future<Either<ArticleResponse, Failure>> topHeadlinesForUs({
+    required String country,
+    required String category,
+  });
+
+  Future<Either<ArticleResponse, Failure>> topHeadlinesForGermany({
     required String country,
     required String category,
   });
@@ -55,7 +60,7 @@ class ArticleRepository implements IArticleRepository {
   }
 
   @override
-  Future<Either<ArticleResponse, Failure>> topHeadlines({
+  Future<Either<ArticleResponse, Failure>> topHeadlinesForUs({
     required String country,
     required String category,
   }) async {
@@ -67,7 +72,33 @@ class ArticleRepository implements IArticleRepository {
       };
 
       final response = await dio.get<Map<String, dynamic>>(
-        NewsApi.getTopHeadLines,
+        NewsApi.getTopHeadLinesForUs,
+        queryParameters: query,
+      );
+      final json = Map<String, dynamic>.from(response.data!);
+      final result = ArticleResponse.fromJson(json);
+      return Left(result);
+    } on DioError catch (e) {
+      return Right(e.toFailure);
+    } catch (e) {
+      return Right(Failure.fromException());
+    }
+  }
+
+  @override
+  Future<Either<ArticleResponse, Failure>> topHeadlinesForGermany({
+    required String country,
+    required String category,
+  }) async {
+    try {
+      final query = {
+        'country': country,
+        'category': category,
+        'apiKey': 'ca56a4c0d027426a868d37a343508228',
+      };
+
+      final response = await dio.get<Map<String, dynamic>>(
+        NewsApi.getTopHeadLinesForGermany,
         queryParameters: query,
       );
       final json = Map<String, dynamic>.from(response.data!);
