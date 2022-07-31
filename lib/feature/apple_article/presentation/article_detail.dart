@@ -2,6 +2,7 @@ import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:newsapi/core/service/date_extension.dart';
 import 'package:newsapi/core/service/global_method.dart';
 import 'package:newsapi/core/service/utils.dart';
 import 'package:newsapi/core/theme/component/widget/vertical_spacing.dart';
@@ -86,14 +87,14 @@ class _NewsDetailsScreenState extends State<NewsDetailsScreen> {
                 Row(
                   children: [
                     Text(
-                      widget.article.publishedAt,
+                      widget.article.publishedAt.articleEventDate(),
                       // style: smallTextStyle,
                     ),
                     const Spacer(),
-                    // Text(
-                    //   currentNews.readingTimeText,
-                    //   // style: smallTextStyle,
-                    // ),
+                    Text(
+                      widget.article.publishedAt.articleTime(),
+                      // style: smallTextStyle,
+                    ),
                   ],
                 ),
                 const VerticalSpacing(20),

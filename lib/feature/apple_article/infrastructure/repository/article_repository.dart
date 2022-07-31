@@ -21,6 +21,12 @@ abstract class IArticleRepository {
     required String country,
     required String category,
   });
+  Future<Either<ArticleResponse, Failure>> searchArticle({
+    required String q,
+    required String sortBy,
+    required DateTime from,
+    required DateTime to,
+  });
 }
 
 class ArticleRepository implements IArticleRepository {
@@ -99,6 +105,35 @@ class ArticleRepository implements IArticleRepository {
 
       final response = await dio.get<Map<String, dynamic>>(
         NewsApi.getTopHeadLinesForGermany,
+        queryParameters: query,
+      );
+      final json = Map<String, dynamic>.from(response.data!);
+      final result = ArticleResponse.fromJson(json);
+      return Left(result);
+    } on DioError catch (e) {
+      return Right(e.toFailure);
+    } catch (e) {
+      return Right(Failure.fromException());
+    }
+  }
+
+  @override
+  Future<Either<ArticleResponse, Failure>> searchArticle(
+      {required String q,
+      required String sortBy,
+      required DateTime from,
+      required DateTime to}) async {
+    try {
+      final query = {
+        'q': q,
+        'sortBy': sortBy,
+        'from': from,
+        'to': to,
+        'apiKey': 'ca56a4c0d027426a868d37a343508228',
+      };
+
+      final response = await dio.get<Map<String, dynamic>>(
+        NewsApi.searchNews,
         queryParameters: query,
       );
       final json = Map<String, dynamic>.from(response.data!);

@@ -2,18 +2,20 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:newsapi/app_setup/dependency_injection.dart';
+import 'package:newsapi/core/service/date_extension.dart';
 import 'package:newsapi/core/service/utils.dart';
 import 'package:newsapi/core/theme/component/widget/article_apple_news.dart';
 import 'package:newsapi/core/theme/component/widget/carasoul_dot_widget.dart';
 import 'package:newsapi/core/theme/component/widget/custom_shimmer.dart';
 import 'package:newsapi/core/theme/component/widget/drawerWidget.dart';
-import 'package:newsapi/feature/apple_article/application/Top_Headline/top_headline/top_headline_bloc.dart';
-import 'package:newsapi/feature/apple_article/application/article_bloc/article_bloc.dart';
+import 'package:newsapi/feature/apple_article/application/Top_Headline_Germany/top_headline_germany_bloc.dart';
+import 'package:newsapi/feature/apple_article/application/Top_Headline_US/top_headline/top_headline_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:newsapi/feature/apple_article/presentation/article_detail.dart';
 import 'package:newsapi/feature/apple_article/presentation/search_news.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class ArticleScreen extends StatefulWidget {
   const ArticleScreen({Key? key}) : super(key: key);
@@ -58,7 +60,9 @@ class _ArticleScreenState extends State<ArticleScreen> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const SearchScreen()));
+                        builder: (context) => SearchScreen(
+                              color: color,
+                            )));
               },
               icon: Icon(
                 IconlyLight.search,
@@ -71,10 +75,10 @@ class _ArticleScreenState extends State<ArticleScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            BlocBuilder<ArticleBloc, ArticleState>(
-              bloc: inject<ArticleBloc>(),
+            BlocBuilder<TopHeadlineGermanyBloc, TopHeadlineGermanyState>(
+              bloc: inject<TopHeadlineGermanyBloc>(),
               builder: (context, state) {
-                if (state is ArticleLoadingState) {
+                if (state is TopHeadlineForGermanyLoadingState) {
                   return CustomShimmer(
                     baseColor: const Color(0xff262837),
                     highlightColor: Colors.grey.shade100,
@@ -93,9 +97,9 @@ class _ArticleScreenState extends State<ArticleScreen> {
                   );
                 }
 
-                if (state is ArticleLoadedState) {
+                if (state is TopHeadlineForGermanyLoadedState) {
                   return CarouselSlider(
-                    items: state.articleResponse.articles
+                    items: state.topHeadlineForGermanyResponse.articles
                         .map(
                           (e) => GestureDetector(
                             onTap: () {
@@ -138,11 +142,12 @@ class _ArticleScreenState extends State<ArticleScreen> {
                                         left: 0,
                                         right: 0,
                                         child: Container(
-                                          decoration: const BoxDecoration(
+                                          decoration: BoxDecoration(
                                             gradient: LinearGradient(
+                                              stops: const [0.1, 0.9],
                                               colors: [
-                                                Color.fromARGB(200, 0, 0, 0),
-                                                Color.fromARGB(0, 0, 0, 0)
+                                                Colors.black.withOpacity(0.9),
+                                                Colors.white.withOpacity(0.0)
                                               ],
                                               begin: Alignment.bottomCenter,
                                               end: Alignment.topCenter,
@@ -150,15 +155,35 @@ class _ArticleScreenState extends State<ArticleScreen> {
                                           ),
                                           padding: const EdgeInsets.symmetric(
                                               vertical: 10, horizontal: 20),
-                                          child: Text(
-                                            e.author ?? '',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline6
-                                                ?.copyWith(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
+                                          child: Row(
+                                            // mainAxisAlignment:
+                                            //     MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Text(
+                                                e.source?.name ?? '',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText1
+                                                    ?.copyWith(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                              ),
+                                              const Spacer(),
+                                              Text(
+                                                timeUntil(DateTime.parse(
+                                                    e.publishedAt)),
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText1
+                                                    ?.copyWith(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),
@@ -346,10 +371,16 @@ class _ArticleScreenState extends State<ArticleScreen> {
                     ),
               ),
             ),
-            const ArticleAppleNewsWidget(),
+            ArticleAppleNewsWidget(
+              color: color,
+            ),
           ],
         ),
       ),
     );
+  }
+
+  String timeUntil(DateTime date) {
+    return timeago.format(date, allowFromNow: true, locale: 'en');
   }
 }

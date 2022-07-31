@@ -12,7 +12,7 @@ class TopHeadlineBloc extends Bloc<TopHeadlineEvent, TopHeadlineState> {
     on<TopHeadlinesStart>(
       (event, emit) async {
         emit(TopHeadlineLoadingState());
-        final response = await homeRepository.topHeadlines(
+        final response = await homeRepository.topHeadlinesForUs(
           category: 'business',
           country: 'us',
         );

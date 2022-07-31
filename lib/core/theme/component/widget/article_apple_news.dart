@@ -2,19 +2,23 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newsapi/app_setup/dependency_injection.dart';
-import 'package:newsapi/core/service/utils.dart';
 import 'package:newsapi/core/theme/component/widget/custom_shimmer.dart';
 import 'package:newsapi/feature/apple_article/application/article_bloc/article_bloc.dart';
 import 'package:newsapi/feature/apple_article/presentation/article_detail.dart';
 
-class ArticleAppleNewsWidget extends StatelessWidget {
-  const ArticleAppleNewsWidget({
-    Key? key,
-  }) : super(key: key);
+class ArticleAppleNewsWidget extends StatefulWidget {
+  const ArticleAppleNewsWidget({Key? key, required this.color})
+      : super(key: key);
+  final Color color;
 
   @override
+  State<ArticleAppleNewsWidget> createState() => _ArticleAppleNewsWidgetState();
+}
+
+class _ArticleAppleNewsWidgetState extends State<ArticleAppleNewsWidget> {
+  @override
   Widget build(BuildContext context) {
-    final color = Utils().getColor;
+    // final color = Utils().getColor;
     return BlocBuilder<ArticleBloc, ArticleState>(
       bloc: inject<ArticleBloc>(),
       builder: (context, state) {
@@ -87,8 +91,8 @@ class ArticleAppleNewsWidget extends StatelessWidget {
                                       .textTheme
                                       .bodyMedium
                                       ?.copyWith(
-                                        color: color,
-                                      ),
+                                          color: widget.color,
+                                          fontWeight: FontWeight.bold),
                                   textAlign: TextAlign.start,
                                   maxLines: 1,
                                 ),
