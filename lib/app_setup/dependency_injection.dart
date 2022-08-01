@@ -7,6 +7,7 @@ import 'package:newsapi/feature/apple_article/application/Top_Headline_US/top_he
 import 'package:newsapi/feature/apple_article/application/article_bloc/article_bloc.dart';
 import 'package:newsapi/feature/apple_article/application/switch/switch_bloc/switch_bloc.dart';
 import 'package:newsapi/feature/apple_article/infrastructure/repository/article_repository.dart';
+import 'package:newsapi/feature/apple_article/infrastructure/repository/local_article_repository.dart';
 
 GetIt inject = GetIt.instance;
 
@@ -25,11 +26,12 @@ void registerClient() {
 
 //register all the repository
 void registerRepository() {
-  inject.registerLazySingleton<IArticleRepository>(
-    () => ArticleRepository(
-      dio: inject(),
-    ),
-  );
+  inject
+    ..registerLazySingleton<IArticleRepository>(() =>
+        ArticleRepository(dio: inject(), iLocalArticleRepository: inject()))
+    ..registerLazySingleton<ILocalArticleRepository>(
+      () => LocalHomeRepository(),
+    );
 }
 
 //register all the blocs
@@ -37,6 +39,7 @@ void registerBloc() {
   inject
     ..registerLazySingleton(
       () => ArticleBloc(
+        localArticleRepository: inject(),
         homeRepository: inject(),
       )..add(ArticleStart()),
     )
@@ -55,6 +58,7 @@ void registerBloc() {
     )
     ..registerLazySingleton(
       () => SearchNewsBloc(
+        localArticleRepository: inject(),
         homeRepository: inject(),
       ),
     );

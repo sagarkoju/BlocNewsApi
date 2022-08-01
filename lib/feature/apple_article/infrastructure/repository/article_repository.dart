@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:newsapi/app_setup/app_endpoint/app_endpoint.dart';
 import 'package:newsapi/core/theme/failure.dart';
 import 'package:newsapi/feature/apple_article/infrastructure/entities/article.dart';
+import 'package:newsapi/feature/apple_article/infrastructure/repository/local_article_repository.dart';
 
 abstract class IArticleRepository {
   //get the list of article of apple All articles mentioning Apple from yesterday, sorted by popular publishers first
@@ -11,6 +12,7 @@ abstract class IArticleRepository {
     required String sortBy,
     required DateTime from,
     required DateTime to,
+    required bool fromRemote,
   });
   Future<Either<ArticleResponse, Failure>> topHeadlinesForUs({
     required String country,
@@ -26,21 +28,24 @@ abstract class IArticleRepository {
     required String sortBy,
     required DateTime from,
     required DateTime to,
+    required bool fromRemote,
   });
 }
 
 class ArticleRepository implements IArticleRepository {
   ArticleRepository({
     required this.dio,
+    required this.iLocalArticleRepository,
   });
   final Dio dio;
-
+  final ILocalArticleRepository iLocalArticleRepository;
   @override
   Future<Either<ArticleResponse, Failure>> getArticle({
     required String q,
     required String sortBy,
     required DateTime from,
     required DateTime to,
+    required bool fromRemote,
   }) async {
     try {
       final query = {
@@ -50,14 +55,28 @@ class ArticleRepository implements IArticleRepository {
         'to': to,
         'apiKey': 'ca56a4c0d027426a868d37a343508228',
       };
-
-      final response = await dio.get<Map<String, dynamic>>(
-        NewsApi.getNews,
-        queryParameters: query,
-      );
-      final json = Map<String, dynamic>.from(response.data!);
-      final result = ArticleResponse.fromJson(json);
-      return Left(result);
+      if (fromRemote) {
+        final response = await dio.get<Map<String, dynamic>>(
+          NewsApi.getNews,
+          queryParameters: query,
+        );
+        final json = Map<String, dynamic>.from(response.data!);
+        final result = ArticleResponse.fromJson(json);
+        return Left(result);
+      } else {
+        final localDataResponse = await iLocalArticleRepository.getArticle();
+        if (localDataResponse != null) {
+          return Left(localDataResponse);
+        } else {
+          final response = await dio.get<Map<String, dynamic>>(
+            NewsApi.getNews,
+            queryParameters: query,
+          );
+          final json = Map<String, dynamic>.from(response.data!);
+          final result = ArticleResponse.fromJson(json);
+          return Left(result);
+        }
+      }
     } on DioError catch (e) {
       return Right(e.toFailure);
     } catch (e) {
@@ -122,6 +141,7 @@ class ArticleRepository implements IArticleRepository {
       {required String q,
       required String sortBy,
       required DateTime from,
+      required bool fromRemote,
       required DateTime to}) async {
     try {
       final query = {
@@ -131,14 +151,28 @@ class ArticleRepository implements IArticleRepository {
         'to': to,
         'apiKey': 'ca56a4c0d027426a868d37a343508228',
       };
-
-      final response = await dio.get<Map<String, dynamic>>(
-        NewsApi.searchNews,
-        queryParameters: query,
-      );
-      final json = Map<String, dynamic>.from(response.data!);
-      final result = ArticleResponse.fromJson(json);
-      return Left(result);
+      if (fromRemote) {
+        final response = await dio.get<Map<String, dynamic>>(
+          NewsApi.searchNews,
+          queryParameters: query,
+        );
+        final json = Map<String, dynamic>.from(response.data!);
+        final result = ArticleResponse.fromJson(json);
+        return Left(result);
+      } else {
+        final localDataResponse = await iLocalArticleRepository.getArticle();
+        if (localDataResponse != null) {
+          return Left(localDataResponse);
+        } else {
+          final response = await dio.get<Map<String, dynamic>>(
+            NewsApi.searchNews,
+            queryParameters: query,
+          );
+          final json = Map<String, dynamic>.from(response.data!);
+          final result = ArticleResponse.fromJson(json);
+          return Left(result);
+        }
+      }
     } on DioError catch (e) {
       return Right(e.toFailure);
     } catch (e) {

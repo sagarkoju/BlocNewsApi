@@ -125,7 +125,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                             fit: BoxFit.cover,
                                             height: 80,
                                             width: double.infinity,
-                                            imageUrl: data.urlToImage ?? '',
+                                            imageUrl: data.urlToImage ??
+                                                'https://thumbs.dreamstime.com/b/live-breaking-news-television-broadcast-globe-gradient-blue-background-illustration-panorama-185818606.jpg',
                                             progressIndicatorBuilder:
                                                 (BuildContext ctx, String image,
                                                     DownloadProgress progress) {
@@ -227,7 +228,7 @@ class _ArticleLoadingState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 150,
+      height: 110,
       child: ListView.builder(
           shrinkWrap: true,
           itemCount: 5,
@@ -243,7 +244,7 @@ class _ArticleLoadingState extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(
                   horizontal: 8,
                 ),
-                height: 160,
+                height: 100,
                 width: 180,
                 decoration: BoxDecoration(
                   color: Colors.grey,

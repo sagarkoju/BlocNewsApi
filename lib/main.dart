@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newsapi/app_setup/bloc_observer.dart';
 import 'package:newsapi/app_setup/dependency_injection.dart';
+import 'package:newsapi/app_setup/hive/hive_setup.dart';
 import 'package:newsapi/core/theme/theme_colors.dart';
 import 'package:newsapi/feature/apple_article/application/switch/switch_bloc/switch_bloc.dart';
 
@@ -23,6 +24,7 @@ Future<void> main() async {
 
 Future<void> initApp() async {
   initDependencyInjection();
+  await HiveSetup.initHive();
 }
 
 class MyApp extends StatelessWidget {

@@ -21,7 +21,8 @@ ArticleResponse _$ArticleResponseFromJson(Map<String, dynamic> json) {
 class _$ArticleResponseTearOff {
   const _$ArticleResponseTearOff();
 
-  _ArticleResponse call({List<Article> articles = const <Article>[]}) {
+  _ArticleResponse call(
+      {@HiveField(0) List<Article> articles = const <Article>[]}) {
     return _ArticleResponse(
       articles: articles,
     );
@@ -37,6 +38,7 @@ const $ArticleResponse = _$ArticleResponseTearOff();
 
 /// @nodoc
 mixin _$ArticleResponse {
+  @HiveField(0)
   List<Article> get articles => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -50,7 +52,7 @@ abstract class $ArticleResponseCopyWith<$Res> {
   factory $ArticleResponseCopyWith(
           ArticleResponse value, $Res Function(ArticleResponse) then) =
       _$ArticleResponseCopyWithImpl<$Res>;
-  $Res call({List<Article> articles});
+  $Res call({@HiveField(0) List<Article> articles});
 }
 
 /// @nodoc
@@ -82,7 +84,7 @@ abstract class _$ArticleResponseCopyWith<$Res>
           _ArticleResponse value, $Res Function(_ArticleResponse) then) =
       __$ArticleResponseCopyWithImpl<$Res>;
   @override
-  $Res call({List<Article> articles});
+  $Res call({@HiveField(0) List<Article> articles});
 }
 
 /// @nodoc
@@ -112,13 +114,14 @@ class __$ArticleResponseCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_ArticleResponse implements _ArticleResponse {
-  const _$_ArticleResponse({this.articles = const <Article>[]});
+  const _$_ArticleResponse({@HiveField(0) this.articles = const <Article>[]});
 
   factory _$_ArticleResponse.fromJson(Map<String, dynamic> json) =>
       _$$_ArticleResponseFromJson(json);
 
   @JsonKey(defaultValue: const <Article>[])
   @override
+  @HiveField(0)
   final List<Article> articles;
 
   @override
@@ -151,12 +154,14 @@ class _$_ArticleResponse implements _ArticleResponse {
 }
 
 abstract class _ArticleResponse implements ArticleResponse {
-  const factory _ArticleResponse({List<Article> articles}) = _$_ArticleResponse;
+  const factory _ArticleResponse({@HiveField(0) List<Article> articles}) =
+      _$_ArticleResponse;
 
   factory _ArticleResponse.fromJson(Map<String, dynamic> json) =
       _$_ArticleResponse.fromJson;
 
   @override
+  @HiveField(0)
   List<Article> get articles => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
@@ -172,7 +177,7 @@ Source _$SourceFromJson(Map<String, dynamic> json) {
 class _$SourceTearOff {
   const _$SourceTearOff();
 
-  _Source call({String? id, required String name}) {
+  _Source call({@HiveField(0) String? id, @HiveField(1) required String name}) {
     return _Source(
       id: id,
       name: name,
@@ -189,7 +194,9 @@ const $Source = _$SourceTearOff();
 
 /// @nodoc
 mixin _$Source {
+  @HiveField(0)
   String? get id => throw _privateConstructorUsedError;
+  @HiveField(1)
   String get name => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -201,7 +208,7 @@ mixin _$Source {
 abstract class $SourceCopyWith<$Res> {
   factory $SourceCopyWith(Source value, $Res Function(Source) then) =
       _$SourceCopyWithImpl<$Res>;
-  $Res call({String? id, String name});
+  $Res call({@HiveField(0) String? id, @HiveField(1) String name});
 }
 
 /// @nodoc
@@ -235,7 +242,7 @@ abstract class _$SourceCopyWith<$Res> implements $SourceCopyWith<$Res> {
   factory _$SourceCopyWith(_Source value, $Res Function(_Source) then) =
       __$SourceCopyWithImpl<$Res>;
   @override
-  $Res call({String? id, String name});
+  $Res call({@HiveField(0) String? id, @HiveField(1) String name});
 }
 
 /// @nodoc
@@ -268,14 +275,16 @@ class __$SourceCopyWithImpl<$Res> extends _$SourceCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_Source implements _Source {
-  const _$_Source({this.id, required this.name});
+  const _$_Source({@HiveField(0) this.id, @HiveField(1) required this.name});
 
   factory _$_Source.fromJson(Map<String, dynamic> json) =>
       _$$_SourceFromJson(json);
 
   @override
+  @HiveField(0)
   final String? id;
   @override
+  @HiveField(1)
   final String name;
 
   @override
@@ -311,13 +320,17 @@ class _$_Source implements _Source {
 }
 
 abstract class _Source implements Source {
-  const factory _Source({String? id, required String name}) = _$_Source;
+  const factory _Source(
+      {@HiveField(0) String? id,
+      @HiveField(1) required String name}) = _$_Source;
 
   factory _Source.fromJson(Map<String, dynamic> json) = _$_Source.fromJson;
 
   @override
+  @HiveField(0)
   String? get id => throw _privateConstructorUsedError;
   @override
+  @HiveField(1)
   String get name => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
@@ -333,14 +346,14 @@ class _$ArticleTearOff {
   const _$ArticleTearOff();
 
   _Article call(
-      {Source? source,
-      String? author,
-      required String title,
-      String? description,
-      required String url,
-      String? urlToImage,
-      required String publishedAt,
-      String? content}) {
+      {@HiveField(0) Source? source,
+      @HiveField(1) String? author,
+      @HiveField(2) required String title,
+      @HiveField(3) String? description,
+      @HiveField(4) required String url,
+      @HiveField(5) String? urlToImage,
+      @HiveField(6) required String publishedAt,
+      @HiveField(7) String? content}) {
     return _Article(
       source: source,
       author: author,
@@ -363,13 +376,21 @@ const $Article = _$ArticleTearOff();
 
 /// @nodoc
 mixin _$Article {
+  @HiveField(0)
   Source? get source => throw _privateConstructorUsedError;
+  @HiveField(1)
   String? get author => throw _privateConstructorUsedError;
+  @HiveField(2)
   String get title => throw _privateConstructorUsedError;
+  @HiveField(3)
   String? get description => throw _privateConstructorUsedError;
+  @HiveField(4)
   String get url => throw _privateConstructorUsedError;
+  @HiveField(5)
   String? get urlToImage => throw _privateConstructorUsedError;
+  @HiveField(6)
   String get publishedAt => throw _privateConstructorUsedError;
+  @HiveField(7)
   String? get content => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -382,14 +403,14 @@ abstract class $ArticleCopyWith<$Res> {
   factory $ArticleCopyWith(Article value, $Res Function(Article) then) =
       _$ArticleCopyWithImpl<$Res>;
   $Res call(
-      {Source? source,
-      String? author,
-      String title,
-      String? description,
-      String url,
-      String? urlToImage,
-      String publishedAt,
-      String? content});
+      {@HiveField(0) Source? source,
+      @HiveField(1) String? author,
+      @HiveField(2) String title,
+      @HiveField(3) String? description,
+      @HiveField(4) String url,
+      @HiveField(5) String? urlToImage,
+      @HiveField(6) String publishedAt,
+      @HiveField(7) String? content});
 
   $SourceCopyWith<$Res>? get source;
 }
@@ -467,14 +488,14 @@ abstract class _$ArticleCopyWith<$Res> implements $ArticleCopyWith<$Res> {
       __$ArticleCopyWithImpl<$Res>;
   @override
   $Res call(
-      {Source? source,
-      String? author,
-      String title,
-      String? description,
-      String url,
-      String? urlToImage,
-      String publishedAt,
-      String? content});
+      {@HiveField(0) Source? source,
+      @HiveField(1) String? author,
+      @HiveField(2) String title,
+      @HiveField(3) String? description,
+      @HiveField(4) String url,
+      @HiveField(5) String? urlToImage,
+      @HiveField(6) String publishedAt,
+      @HiveField(7) String? content});
 
   @override
   $SourceCopyWith<$Res>? get source;
@@ -541,33 +562,41 @@ class __$ArticleCopyWithImpl<$Res> extends _$ArticleCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Article implements _Article {
   const _$_Article(
-      {this.source,
-      this.author,
-      required this.title,
-      this.description,
-      required this.url,
-      this.urlToImage,
-      required this.publishedAt,
-      this.content});
+      {@HiveField(0) this.source,
+      @HiveField(1) this.author,
+      @HiveField(2) required this.title,
+      @HiveField(3) this.description,
+      @HiveField(4) required this.url,
+      @HiveField(5) this.urlToImage,
+      @HiveField(6) required this.publishedAt,
+      @HiveField(7) this.content});
 
   factory _$_Article.fromJson(Map<String, dynamic> json) =>
       _$$_ArticleFromJson(json);
 
   @override
+  @HiveField(0)
   final Source? source;
   @override
+  @HiveField(1)
   final String? author;
   @override
+  @HiveField(2)
   final String title;
   @override
+  @HiveField(3)
   final String? description;
   @override
+  @HiveField(4)
   final String url;
   @override
+  @HiveField(5)
   final String? urlToImage;
   @override
+  @HiveField(6)
   final String publishedAt;
   @override
+  @HiveField(7)
   final String? content;
 
   @override
@@ -625,32 +654,40 @@ class _$_Article implements _Article {
 
 abstract class _Article implements Article {
   const factory _Article(
-      {Source? source,
-      String? author,
-      required String title,
-      String? description,
-      required String url,
-      String? urlToImage,
-      required String publishedAt,
-      String? content}) = _$_Article;
+      {@HiveField(0) Source? source,
+      @HiveField(1) String? author,
+      @HiveField(2) required String title,
+      @HiveField(3) String? description,
+      @HiveField(4) required String url,
+      @HiveField(5) String? urlToImage,
+      @HiveField(6) required String publishedAt,
+      @HiveField(7) String? content}) = _$_Article;
 
   factory _Article.fromJson(Map<String, dynamic> json) = _$_Article.fromJson;
 
   @override
+  @HiveField(0)
   Source? get source => throw _privateConstructorUsedError;
   @override
+  @HiveField(1)
   String? get author => throw _privateConstructorUsedError;
   @override
+  @HiveField(2)
   String get title => throw _privateConstructorUsedError;
   @override
+  @HiveField(3)
   String? get description => throw _privateConstructorUsedError;
   @override
+  @HiveField(4)
   String get url => throw _privateConstructorUsedError;
   @override
+  @HiveField(5)
   String? get urlToImage => throw _privateConstructorUsedError;
   @override
+  @HiveField(6)
   String get publishedAt => throw _privateConstructorUsedError;
   @override
+  @HiveField(7)
   String? get content => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)

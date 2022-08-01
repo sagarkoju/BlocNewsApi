@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+
 import 'package:newsapi/feature/apple_article/infrastructure/entities/article.dart';
 import 'package:newsapi/feature/apple_article/infrastructure/repository/article_repository.dart';
 

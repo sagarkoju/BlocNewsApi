@@ -1,6 +1,6 @@
 part of 'search_news_bloc.dart';
 
-@freezed
+
 class SearchNewsState {}
 
 class SearchNewsInitialState extends SearchNewsState {}

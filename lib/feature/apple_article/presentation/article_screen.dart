@@ -1,18 +1,19 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:newsapi/app_setup/dependency_injection.dart';
-import 'package:newsapi/core/service/date_extension.dart';
 import 'package:newsapi/core/service/utils.dart';
 import 'package:newsapi/core/theme/component/widget/article_apple_news.dart';
 import 'package:newsapi/core/theme/component/widget/carasoul_dot_widget.dart';
 import 'package:newsapi/core/theme/component/widget/custom_shimmer.dart';
-import 'package:newsapi/core/theme/component/widget/drawerWidget.dart';
 import 'package:newsapi/feature/apple_article/application/Top_Headline_Germany/top_headline_germany_bloc.dart';
 import 'package:newsapi/feature/apple_article/application/Top_Headline_US/top_headline/top_headline_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:newsapi/feature/apple_article/application/article_bloc/article_bloc.dart';
+import 'package:newsapi/feature/apple_article/application/switch/switch_bloc/switch_bloc.dart';
 import 'package:newsapi/feature/apple_article/presentation/article_detail.dart';
 import 'package:newsapi/feature/apple_article/presentation/search_news.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -27,7 +28,7 @@ class ArticleScreen extends StatefulWidget {
 class _ArticleScreenState extends State<ArticleScreen> {
   @override
   void initState() {
-    // inject<TopHeadlineBloc>().add(TopHeadlinesStart());
+    inject<ArticleBloc>().add(ArticleStart(fromRemote: true));
 
     super.initState();
   }
@@ -67,10 +68,29 @@ class _ArticleScreenState extends State<ArticleScreen> {
               icon: Icon(
                 IconlyLight.search,
                 color: color,
-              ))
+              )),
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: BlocBuilder<SwitchBloc, SwitchState>(
+              bloc: inject<SwitchBloc>(),
+              builder: (context, state) {
+                return CupertinoSwitch(
+                  activeColor: color,
+                  value: state.switchValue,
+                  onChanged: (value) {
+                    setState(() {
+                      value
+                          ? inject<SwitchBloc>().add(SwitchOnEvent())
+                          : inject<SwitchBloc>().add(SwitchOffEvent());
+                    });
+                  },
+                );
+              },
+            ),
+          )
         ],
       ),
-      drawer: const DrawerWidget(),
+      // drawer: const DrawerWidget(),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
