@@ -12,7 +12,7 @@ class LocalHomeRepository implements ILocalArticleRepository {
   Future<void> cacheArticle({required ArticleResponse articleResponse}) async {
     final popularArticleHiveBox =
         await Hive.openLazyBox<ArticleResponse>(HiveBox.getResponseNewsBox);
-    popularArticleHiveBox.put('popularMovies', articleResponse);
+    popularArticleHiveBox.put('popularArticle', articleResponse);
   }
 
   @override
@@ -22,7 +22,7 @@ class LocalHomeRepository implements ILocalArticleRepository {
           await Hive.openLazyBox<ArticleResponse>(HiveBox.getResponseNewsBox);
 
       final data = popularArticleHiveBox.isNotEmpty
-          ? await popularArticleHiveBox.get('popularMovies')
+          ? await popularArticleHiveBox.get('popularArticle')
           : null;
 
       return data;

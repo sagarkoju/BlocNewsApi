@@ -17,11 +17,10 @@ class SearchNewsBloc extends Bloc<SearchNewsEvent, SearchNewsState> {
         emit(SearchNewsInitialState());
       } else {
         emit(SearchNewsLoadingState());
-        final response = await homeRepository.getArticle(
+        final response = await homeRepository.searchArticle(
             q: event.auther,
             to: DateTime.parse('2022-07-31'),
             from: DateTime.parse('2022-07-31'),
-            fromRemote: true,
             sortBy: 'popularity');
         response.fold((articleResponse) async {
           emit(SearchNewsLoadedState(searchResponse: articleResponse));

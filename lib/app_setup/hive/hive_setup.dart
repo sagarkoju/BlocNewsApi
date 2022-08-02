@@ -21,7 +21,7 @@ class HiveSetup {
   }
 }
 
-const String _dbDirectory = 'News Api';
+const String _dbDirectory = 'News_Api';
 
 /// getting the app directory
 Future<String> get databasePath async {

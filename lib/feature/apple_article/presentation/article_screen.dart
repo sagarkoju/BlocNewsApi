@@ -28,7 +28,7 @@ class ArticleScreen extends StatefulWidget {
 class _ArticleScreenState extends State<ArticleScreen> {
   @override
   void initState() {
-    inject<ArticleBloc>().add(ArticleStart(fromRemote: true));
+    // inject<ArticleBloc>().add(ArticleStart(fromRemote: false));
 
     super.initState();
   }
