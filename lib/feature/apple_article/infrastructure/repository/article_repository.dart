@@ -18,11 +18,13 @@ abstract class IArticleRepository {
   Future<Either<ArticleResponse, Failure>> topHeadlinesForUs({
     required String country,
     required String category,
+    required bool fromRemote,
   });
 
   Future<Either<ArticleResponse, Failure>> topHeadlinesForGermany({
     required String country,
     required String category,
+    required bool fromRemote,
   });
   Future<Either<ArticleResponse, Failure>> searchArticle({
     required String q,
@@ -99,21 +101,45 @@ class ArticleRepository implements IArticleRepository {
   Future<Either<ArticleResponse, Failure>> topHeadlinesForUs({
     required String country,
     required String category,
+    required bool fromRemote,
   }) async {
     try {
-      final query = {
-        'country': country,
-        'category': category,
-        'apiKey': 'ca56a4c0d027426a868d37a343508228',
-      };
+      if (fromRemote) {
+        final query = {
+          'country': country,
+          'category': category,
+          'apiKey': 'ca56a4c0d027426a868d37a343508228',
+        };
 
-      final response = await dio.get<Map<String, dynamic>>(
-        NewsApi.getTopHeadLinesForUs,
-        queryParameters: query,
-      );
-      final json = Map<String, dynamic>.from(response.data!);
-      final result = ArticleResponse.fromJson(json);
-      return Left(result);
+        final response = await dio.get<Map<String, dynamic>>(
+          NewsApi.getTopHeadLinesForUs,
+          queryParameters: query,
+        );
+        final json = Map<String, dynamic>.from(response.data!);
+        final result = ArticleResponse.fromJson(json);
+        await iLocalArticleRepository.cacheArticle(articleResponse: result);
+        return Left(result);
+      } else {
+        final localDataResponse = await iLocalArticleRepository.getArticle();
+        if (localDataResponse != null) {
+          return Left(localDataResponse);
+        } else {
+          final query = {
+            'country': country,
+            'category': category,
+            'apiKey': 'ca56a4c0d027426a868d37a343508228',
+          };
+
+          final response = await dio.get<Map<String, dynamic>>(
+            NewsApi.getTopHeadLinesForUs,
+            queryParameters: query,
+          );
+          final json = Map<String, dynamic>.from(response.data!);
+          final result = ArticleResponse.fromJson(json);
+          await iLocalArticleRepository.cacheArticle(articleResponse: result);
+          return Left(result);
+        }
+      }
     } on DioError catch (e) {
       return Right(e.toFailure);
     } catch (e) {
@@ -125,21 +151,49 @@ class ArticleRepository implements IArticleRepository {
   Future<Either<ArticleResponse, Failure>> topHeadlinesForGermany({
     required String country,
     required String category,
+    required bool fromRemote,
   }) async {
     try {
-      final query = {
-        'country': country,
-        'category': category,
-        'apiKey': 'ca56a4c0d027426a868d37a343508228',
-      };
+      if (fromRemote) {
+        final query = {
+          'country': country,
+          'category': category,
+          'apiKey': 'ca56a4c0d027426a868d37a343508228',
+        };
 
-      final response = await dio.get<Map<String, dynamic>>(
-        NewsApi.getTopHeadLinesForGermany,
-        queryParameters: query,
-      );
-      final json = Map<String, dynamic>.from(response.data!);
-      final result = ArticleResponse.fromJson(json);
-      return Left(result);
+        final response = await dio.get<Map<String, dynamic>>(
+          NewsApi.getTopHeadLinesForGermany,
+          queryParameters: query,
+        );
+        final json = Map<String, dynamic>.from(response.data!);
+
+        final result = ArticleResponse.fromJson(json);
+        await iLocalArticleRepository.cacheArticle(articleResponse: result);
+
+        return Left(result);
+      } else {
+        final localNews = await iLocalArticleRepository.getArticle();
+        if (localNews != null) {
+          return Left(localNews);
+        } else {
+          final query = {
+            'country': country,
+            'category': category,
+            'apiKey': 'ca56a4c0d027426a868d37a343508228',
+          };
+
+          final response = await dio.get<Map<String, dynamic>>(
+            NewsApi.getTopHeadLinesForGermany,
+            queryParameters: query,
+          );
+          final json = Map<String, dynamic>.from(response.data!);
+
+          final result = ArticleResponse.fromJson(json);
+          await iLocalArticleRepository.cacheArticle(articleResponse: result);
+
+          return Left(result);
+        }
+      }
     } on DioError catch (e) {
       return Right(e.toFailure);
     } catch (e) {

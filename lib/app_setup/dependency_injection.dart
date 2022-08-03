@@ -49,12 +49,13 @@ void registerBloc() {
     ..registerLazySingleton(
       () => TopHeadlineBloc(
         homeRepository: inject(),
+        localArticleRepository: inject(),
       )..add(TopHeadlinesStart()),
     )
     ..registerLazySingleton(
       () => TopHeadlineGermanyBloc(
-        homeRepository: inject(),
-      )..add(TopHeadlinesForGermanyStart()),
+          homeRepository: inject(), iLocalArticleRepository: inject())
+        ..add(TopHeadlinesForGermanyStart()),
     )
     ..registerLazySingleton(
       () => SearchNewsBloc(
