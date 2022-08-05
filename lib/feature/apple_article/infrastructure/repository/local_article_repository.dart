@@ -11,6 +11,9 @@ abstract class ILocalArticleRepository {
   Future<void> cacheArticleForTopHeadlineUs(
       {required ArticleResponse articleResponse});
   Future<ArticleResponse?> getArticleForTopHeadlineUs();
+  Future<void> cacheArticleForCategory(
+      {required ArticleResponse articleResponse});
+  Future<ArticleResponse?> getArticleForCategory();
 }
 
 class LocalHomeRepository implements ILocalArticleRepository {
@@ -77,6 +80,30 @@ class LocalHomeRepository implements ILocalArticleRepository {
 
       final data = popularArticleHiveBox.isNotEmpty
           ? await popularArticleHiveBox.get('popularArticleForUS')
+          : null;
+
+      return data;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  @override
+  Future<void> cacheArticleForCategory(
+      {required ArticleResponse articleResponse}) async {
+    final popularArticleHiveBox =
+        await Hive.openLazyBox<ArticleResponse>(HiveBox.getResponseNewsBox);
+    popularArticleHiveBox.put('popularArticleForCategory', articleResponse);
+  }
+
+  @override
+  Future<ArticleResponse?> getArticleForCategory() async {
+    try {
+      final popularArticleHiveBox =
+          await Hive.openLazyBox<ArticleResponse>(HiveBox.getResponseNewsBox);
+
+      final data = popularArticleHiveBox.isNotEmpty
+          ? await popularArticleHiveBox.get('popularArticleForCategory')
           : null;
 
       return data;

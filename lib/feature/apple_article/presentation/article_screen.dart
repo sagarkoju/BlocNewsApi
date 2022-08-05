@@ -290,7 +290,7 @@ class _ArticleScreenState extends State<ArticleScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
               child: Text(
                 'Top Headline',
                 style: Theme.of(context).textTheme.headline6?.copyWith(

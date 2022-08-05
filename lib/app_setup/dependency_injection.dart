@@ -48,7 +48,10 @@ void registerBloc() {
       () => SwitchBloc(),
     )
     ..registerLazySingleton(
-      () => CategoryNewsBloc(homeRepository: inject()),
+      () => CategoryNewsBloc(
+        homeRepository: inject(),
+        iLocalArticleRepository: inject(),
+      ),
     )
     ..registerLazySingleton(
       () => TopHeadlineBloc(

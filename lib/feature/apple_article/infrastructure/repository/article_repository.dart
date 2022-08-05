@@ -31,6 +31,7 @@ abstract class IArticleRepository {
   Future<Either<ArticleResponse, Failure>> topCategory({
     required String country,
     required String categoryName,
+    required bool fromRemote,
   });
   Future<Either<ArticleResponse, Failure>> searchArticle({
     required String q,
@@ -243,24 +244,52 @@ class ArticleRepository implements IArticleRepository {
   }
 
   @override
-  Future<Either<ArticleResponse, Failure>> topCategory(
-      {required String country, required String categoryName}) async {
+  Future<Either<ArticleResponse, Failure>> topCategory({
+    required String country,
+    required String categoryName,
+    required bool fromRemote,
+  }) async {
     try {
-      final query = {
-        'country': country,
-        'category': '$categoryName',
-        'apiKey': 'ca56a4c0d027426a868d37a343508228',
-      };
+      if (fromRemote) {
+        final query = {
+          'country': country,
+          'category': '$categoryName',
+          'apiKey': 'ca56a4c0d027426a868d37a343508228',
+        };
 
-      final response = await dio.get<Map<String, dynamic>>(
-        NewsApi.getTopCategory,
-        queryParameters: query,
-      );
-      final json = Map<String, dynamic>.from(response.data!);
+        final response = await dio.get<Map<String, dynamic>>(
+          NewsApi.getTopCategory,
+          queryParameters: query,
+        );
+        final json = Map<String, dynamic>.from(response.data!);
 
-      final result = ArticleResponse.fromJson(json);
+        final result = ArticleResponse.fromJson(json);
+        await iLocalArticleRepository.cacheArticleForCategory(
+            articleResponse: result);
+        return Left(result);
+      } else {
+        final localData = await iLocalArticleRepository.getArticleForCategory();
+        if (localData != null) {
+          return Left(localData);
+        } else {
+          final query = {
+            'country': country,
+            'category': '$categoryName',
+            'apiKey': 'ca56a4c0d027426a868d37a343508228',
+          };
 
-      return Left(result);
+          final response = await dio.get<Map<String, dynamic>>(
+            NewsApi.getTopCategory,
+            queryParameters: query,
+          );
+          final json = Map<String, dynamic>.from(response.data!);
+
+          final result = ArticleResponse.fromJson(json);
+          await iLocalArticleRepository.cacheArticleForCategory(
+              articleResponse: result);
+          return Left(result);
+        }
+      }
     } on DioError catch (e) {
       return Right(e.toFailure);
     } catch (e) {
