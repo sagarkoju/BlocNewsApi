@@ -23,7 +23,7 @@ class TopHeadlineBloc extends Bloc<TopHeadlineEvent, TopHeadlineState> {
         response.fold(
           (topheadlinelist) async {
             emit(TopHeadlineLoadedState(topHeadlineResponse: topheadlinelist));
-            await localArticleRepository.cacheArticle(
+            await localArticleRepository.cacheArticleForTopHeadlineUs(
                 articleResponse: topheadlinelist);
           },
           (failure) {

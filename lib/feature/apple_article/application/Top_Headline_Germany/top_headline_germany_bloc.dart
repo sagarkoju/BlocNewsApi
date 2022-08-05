@@ -26,7 +26,7 @@ class TopHeadlineGermanyBloc
           (topheadlinelist) async {
             emit(TopHeadlineForGermanyLoadedState(
                 topHeadlineForGermanyResponse: topheadlinelist));
-            await iLocalArticleRepository.cacheArticle(
+            await iLocalArticleRepository.cacheArticleForTopHeadlineGermany(
                 articleResponse: topheadlinelist);
           },
           (failure) {

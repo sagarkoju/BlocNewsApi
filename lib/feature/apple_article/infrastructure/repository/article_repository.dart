@@ -117,10 +117,12 @@ class ArticleRepository implements IArticleRepository {
         );
         final json = Map<String, dynamic>.from(response.data!);
         final result = ArticleResponse.fromJson(json);
-        await iLocalArticleRepository.cacheArticle(articleResponse: result);
+        await iLocalArticleRepository.cacheArticleForTopHeadlineUs(
+            articleResponse: result);
         return Left(result);
       } else {
-        final localDataResponse = await iLocalArticleRepository.getArticle();
+        final localDataResponse =
+            await iLocalArticleRepository.getArticleForTopHeadlineUs();
         if (localDataResponse != null) {
           return Left(localDataResponse);
         } else {
@@ -136,7 +138,8 @@ class ArticleRepository implements IArticleRepository {
           );
           final json = Map<String, dynamic>.from(response.data!);
           final result = ArticleResponse.fromJson(json);
-          await iLocalArticleRepository.cacheArticle(articleResponse: result);
+          await iLocalArticleRepository.cacheArticleForTopHeadlineUs(
+              articleResponse: result);
           return Left(result);
         }
       }
@@ -168,11 +171,13 @@ class ArticleRepository implements IArticleRepository {
         final json = Map<String, dynamic>.from(response.data!);
 
         final result = ArticleResponse.fromJson(json);
-        await iLocalArticleRepository.cacheArticle(articleResponse: result);
+        await iLocalArticleRepository.cacheArticleForTopHeadlineGermany(
+            articleResponse: result);
 
         return Left(result);
       } else {
-        final localNews = await iLocalArticleRepository.getArticle();
+        final localNews =
+            await iLocalArticleRepository.getArticleForTopHeadlineGermany();
         if (localNews != null) {
           return Left(localNews);
         } else {
@@ -189,7 +194,8 @@ class ArticleRepository implements IArticleRepository {
           final json = Map<String, dynamic>.from(response.data!);
 
           final result = ArticleResponse.fromJson(json);
-          await iLocalArticleRepository.cacheArticle(articleResponse: result);
+          await iLocalArticleRepository.cacheArticleForTopHeadlineGermany(
+              articleResponse: result);
 
           return Left(result);
         }

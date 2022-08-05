@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:newsapi/app_setup/dependency_injection.dart';
+import 'package:newsapi/core/Helper/data.dart';
 import 'package:newsapi/core/service/utils.dart';
 import 'package:newsapi/core/theme/component/widget/article_apple_news.dart';
 import 'package:newsapi/core/theme/component/widget/carasoul_dot_widget.dart';
@@ -12,7 +13,6 @@ import 'package:newsapi/feature/apple_article/application/Top_Headline_US/top_he
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:newsapi/feature/apple_article/application/article_bloc/article_bloc.dart';
 import 'package:newsapi/feature/apple_article/application/switch/switch_bloc/switch_bloc.dart';
 import 'package:newsapi/feature/apple_article/presentation/article_detail.dart';
 import 'package:newsapi/feature/apple_article/presentation/search_news.dart';
@@ -26,8 +26,10 @@ class ArticleScreen extends StatefulWidget {
 }
 
 class _ArticleScreenState extends State<ArticleScreen> {
+  List<Category> categoryName = [];
   @override
   void initState() {
+    categoryName = List.of(categoriesName);
     // inject<ArticleBloc>().add(ArticleStart(fromRemote: false));
 
     super.initState();
@@ -234,6 +236,43 @@ class _ArticleScreenState extends State<ArticleScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Text(
+                'Category',
+                style: Theme.of(context).textTheme.headline6?.copyWith(
+                      color: color,
+                    ),
+              ),
+            ),
+            SizedBox(
+              height: 30,
+              child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: categoryName.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4),
+                        color: Colors.grey,
+                      ),
+                      child: Text(
+                        categoryName[index].categoryName,
+                        style: Theme.of(context).textTheme.button?.copyWith(
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 0.08,
+                            ),
+                      ),
+                    );
+                  }),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Text(
                 'Top Headline',
                 style: Theme.of(context).textTheme.headline6?.copyWith(
                       color: color,
@@ -257,16 +296,16 @@ class _ArticleScreenState extends State<ArticleScreen> {
                               highlightColor: Colors.grey.shade100,
                               widget: Container(
                                 margin:
-                                    const EdgeInsets.symmetric(horizontal: 8),
+                                    const EdgeInsets.symmetric(horizontal: 3),
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 8,
                                 ),
                                 height: 100,
-                                width: 200,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey,
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
+                                width: 100,
+                                decoration: const BoxDecoration(
+                                    color: Colors.grey,
+                                    // borderRadius: BorderRadius.circular(5),
+                                    shape: BoxShape.circle),
                               ),
                             );
                           }),
@@ -326,9 +365,8 @@ class _ArticleScreenState extends State<ArticleScreen> {
                                               ],
                                             ),
                                             child: CircleAvatar(
-                                              backgroundImage: NetworkImage(data
-                                                      .urlToImage ??
-                                                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLZJ9wqf6DCyzDcpwQIPuk50hogm0jaebmpQ&usqp=CAU'),
+                                              backgroundImage: NetworkImage(
+                                                  data.urlToImage ?? ''),
                                             )),
                                       ),
                                       const SizedBox(
