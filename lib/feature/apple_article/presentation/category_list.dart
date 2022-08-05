@@ -110,7 +110,7 @@ class _CategoryListState extends State<CategoryList> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        data.author ?? '',
+                                        data.author ?? data.source!.name,
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodyLarge

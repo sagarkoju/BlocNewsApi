@@ -26,7 +26,7 @@ class CategoryNewsBloc extends Bloc<CategoryNewsEvent, CategoryNewsState> {
           (topheadlinelist) async {
             emit(CategoryLoadedState(articleResponse: topheadlinelist));
             await iLocalArticleRepository.cacheArticleForCategory(
-                articleResponse: topheadlinelist);
+                articleResponse: topheadlinelist, name: event.categoryName);
           },
           (failure) {
             emit(CategoryLoadedStateErrorState(errorMessage: failure.reason));

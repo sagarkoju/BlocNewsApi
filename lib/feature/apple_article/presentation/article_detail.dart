@@ -7,8 +7,6 @@ import 'package:newsapi/core/service/global_method.dart';
 import 'package:newsapi/core/service/utils.dart';
 import 'package:newsapi/core/theme/component/widget/vertical_spacing.dart';
 import 'package:newsapi/feature/apple_article/infrastructure/entities/article.dart';
-import 'package:newsapi/feature/apple_article/infrastructure/repository/article_repository.dart';
-import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 class NewsDetailsScreen extends StatefulWidget {

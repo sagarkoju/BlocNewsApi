@@ -265,10 +265,14 @@ class ArticleRepository implements IArticleRepository {
 
         final result = ArticleResponse.fromJson(json);
         await iLocalArticleRepository.cacheArticleForCategory(
-            articleResponse: result);
+          articleResponse: result,
+          name: categoryName,
+        );
         return Left(result);
       } else {
-        final localData = await iLocalArticleRepository.getArticleForCategory();
+        final localData = await iLocalArticleRepository.getArticleForCategory(
+          name: categoryName,
+        );
         if (localData != null) {
           return Left(localData);
         } else {
@@ -286,7 +290,9 @@ class ArticleRepository implements IArticleRepository {
 
           final result = ArticleResponse.fromJson(json);
           await iLocalArticleRepository.cacheArticleForCategory(
-              articleResponse: result);
+            articleResponse: result,
+            name: categoryName,
+          );
           return Left(result);
         }
       }
