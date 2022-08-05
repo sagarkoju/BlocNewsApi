@@ -15,6 +15,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:newsapi/feature/apple_article/application/switch/switch_bloc/switch_bloc.dart';
 import 'package:newsapi/feature/apple_article/presentation/article_detail.dart';
+import 'package:newsapi/feature/apple_article/presentation/category_list.dart';
 import 'package:newsapi/feature/apple_article/presentation/search_news.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -242,33 +243,51 @@ class _ArticleScreenState extends State<ArticleScreen> {
                     ),
               ),
             ),
-            SizedBox(
-              height: 30,
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: categoryName.length,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 4),
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                        color: Colors.grey,
-                      ),
-                      child: Text(
-                        categoryName[index].categoryName,
-                        style: Theme.of(context).textTheme.button?.copyWith(
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 0.08,
-                            ),
-                      ),
-                    );
-                  }),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 10,
+              ),
+              child: SizedBox(
+                height: 30,
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: categoryName.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CategoryList(
+                                        color: color,
+                                        categoryName: categoryName[index]
+                                            .categoryName
+                                            .toLowerCase(),
+                                      )));
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 4),
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            color: Colors.grey,
+                          ),
+                          child: Text(
+                            categoryName[index].categoryName,
+                            style: Theme.of(context).textTheme.button?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 0.08,
+                                ),
+                          ),
+                        ),
+                      );
+                    }),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),

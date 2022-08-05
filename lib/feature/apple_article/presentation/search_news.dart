@@ -5,7 +5,6 @@ import 'package:newsapi/app_setup/dependency_injection.dart';
 import 'package:newsapi/core/service/date_extension.dart';
 import 'package:newsapi/core/theme/component/widget/custom_shimmer.dart';
 import 'package:newsapi/feature/apple_article/application/SearchNews/search_news_bloc.dart';
-import 'package:newsapi/feature/apple_article/application/article_bloc/article_bloc.dart';
 import 'package:newsapi/feature/apple_article/presentation/article_detail.dart';
 
 class SearchScreen extends StatefulWidget {

@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_string_interpolations
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:newsapi/app_setup/app_endpoint/app_endpoint.dart';
@@ -25,6 +27,10 @@ abstract class IArticleRepository {
     required String country,
     required String category,
     required bool fromRemote,
+  });
+  Future<Either<ArticleResponse, Failure>> topCategory({
+    required String country,
+    required String categoryName,
   });
   Future<Either<ArticleResponse, Failure>> searchArticle({
     required String q,
@@ -228,6 +234,32 @@ class ArticleRepository implements IArticleRepository {
       );
       final json = Map<String, dynamic>.from(response.data!);
       final result = ArticleResponse.fromJson(json);
+      return Left(result);
+    } on DioError catch (e) {
+      return Right(e.toFailure);
+    } catch (e) {
+      return Right(Failure.fromException());
+    }
+  }
+
+  @override
+  Future<Either<ArticleResponse, Failure>> topCategory(
+      {required String country, required String categoryName}) async {
+    try {
+      final query = {
+        'country': country,
+        'category': '$categoryName',
+        'apiKey': 'ca56a4c0d027426a868d37a343508228',
+      };
+
+      final response = await dio.get<Map<String, dynamic>>(
+        NewsApi.getTopCategory,
+        queryParameters: query,
+      );
+      final json = Map<String, dynamic>.from(response.data!);
+
+      final result = ArticleResponse.fromJson(json);
+
       return Left(result);
     } on DioError catch (e) {
       return Right(e.toFailure);
